@@ -2,7 +2,7 @@ const env = require('../env');
 const path = require('path');
 const Datastore = require('nedb');
 const db = new Datastore({
-    filename: path.join(env, 'user.db'),
+    filename: path.join(env.DB_STORE, 'user.db'),
     autoload: true
 });
 

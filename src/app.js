@@ -7,10 +7,6 @@ const serverConfig = require('./config/server.json');
 const packageJson = require('../package.json');
 const logger = require('./common/logger')('App');
 
-const rateLimitWrapper = require('./middlewares/rateLimitWrapper');
-
-const healthRoute = require('./routes/health');
-
 // Load process.env configs as soon as possible
 const dotenv = require('dotenv');
 const fileUtil = require('./util/fileUtil');
@@ -20,6 +16,12 @@ if (!fileUtil.existsSync(envPath)) {
     process.exit(0);
 }
 dotenv.config({ path: envPath });
+
+const rateLimitWrapper = require('./middlewares/rateLimitWrapper');
+const authAPI = require('./middlewares/authAPI');
+
+const healthRoute = require('./routes/health');
+const authRoute = require('./routes/auth');
 
 console.log(`====== ${packageJson.name} ======`);
 logger.info(`====== ${packageJson.name} ======`);
@@ -37,7 +39,8 @@ app.use(compression());
 /**
  * Register routes of API
  */
-app.use('/api/health', rateLimitWrapper(), healthRoute);
+app.use('/api/health', rateLimitWrapper(), authAPI(), healthRoute);
+app.use('/api/auth', rateLimitWrapper(), authRoute);
 
 const port = serverConfig.port;
 app.listen(port, () => {

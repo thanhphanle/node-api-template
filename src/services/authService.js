@@ -7,14 +7,14 @@ const saltRounds = 10;
 
 authService.login = async function(username, password) {
     try {
-        const foundUser = await userService.find({ username: username });
-        if (foundUser === null) {
+        const foundUsers = await userService.find({ username: username });
+        if (foundUsers.length === 0) {
             return {
                 isAuthenticated: false
             };
         }
 
-        let hash = foundUser.password;
+        let hash = foundUsers[0].password;
         let comparePassword = function() {
             return new Promise((resolve, reject) => {
                 bcrypt.compare(password, hash, (err, result) => {
@@ -37,8 +37,8 @@ authService.login = async function(username, password) {
 
 authService.register = async function(user) {
     try {
-        const existedUser = await userService.find({ username: username });
-        if (existedUser !== null) {
+        const users = await userService.find({ username: user.username });
+        if (users.length > 0) {
             return {
                 isSuccess: false,
                 isExisted: true
