@@ -28,7 +28,7 @@ $ npm install
 ```
 
 **Step 2**: Create a config file `.env` in env directory with content below:
-```
+```properties
 JWT_KEY=this-is-a-sample-secret
 DB_STORE=/var/nodeapi-template-db
 ```
