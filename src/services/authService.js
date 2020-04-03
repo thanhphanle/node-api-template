@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const env = require('../env');
 const userService = require('./userService');
 const uidUtil = require('../util/uidUtil');
+const moment = require('moment');
 const authService = {};
 const saltRounds = 10;
 
@@ -29,7 +30,8 @@ authService.login = async function(username, password) {
         };
         let isMatched = await comparePassword();
         return {
-            isAuthenticated: isMatched
+            isAuthenticated: isMatched,
+            user: foundUsers[0]
         };
     } catch (err) {
         throw err;
@@ -67,7 +69,7 @@ authService.register = async function(user) {
 
 authService.generateToken = function(data) {
     const signature = env.JWT_KEY;
-    const expiration = '1h';
+    const expiration = '24h';
     return jwt.sign({ data }, signature, { expiresIn: expiration });
 };
 
@@ -85,6 +87,22 @@ authService.decodeToken = function(token) {
     try {
         let decoded = jwt.decode(token);
         return decoded;
+    } catch (err) {
+        throw err;
+    }
+};
+
+authService.changePassword = async function(username, newPassword) {
+    try {
+        // Hash plain text password
+        let salt = await bcrypt.genSalt(saltRounds);
+        let newHash = await bcrypt.hash(newPassword, salt);
+
+        await userService.update(
+            { username: username },
+            { $set: { password: newHash, updatedAt: moment().format() } }
+        );
+        return true;
     } catch (err) {
         throw err;
     }

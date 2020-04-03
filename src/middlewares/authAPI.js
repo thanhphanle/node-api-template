@@ -25,6 +25,9 @@ function authAPI(options) {
             // Verify token by decoding token
             try {
                 let decoded = authService.verifyToken(token);
+
+                // Assign user data from token
+                req.user = decoded.data;
             } catch (verifyErr) {
                 response.sendUnauthorized(res);
                 return;

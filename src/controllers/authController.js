@@ -2,6 +2,7 @@ const logger = require('../common/logger')('AuthController');
 const response = require('../util/response');
 const authService = require('../services/authService');
 const moment = require('moment');
+const _ = require('lodash');
 const text = require('../common/text');
 const authController = {};
 
@@ -23,13 +24,15 @@ authController.local = async function(req, res) {
         }
 
         let token = authService.generateToken({
-            username: username
+            id: loginResult.user.id,
+            username: loginResult.user.username
         });
 
         let data = {
             accessToken: token,
             user: {
-                username: username
+                id: loginResult.user.id,
+                username: loginResult.user.username
             }
         };
         response.sendSuccess(res, data);
@@ -65,6 +68,42 @@ authController.register = async function(req, res) {
         let user = registerResult.user;
         delete user.password;
         response.sendSuccess(res, user);
+    } catch (err) {
+        logger.error(`Do ${req.url} failed, ${err.stack}`);
+        response.sendError(res, err);
+    }
+};
+
+authController.changePassword = async function(req, res) {
+    let username = null;
+    let password = null;
+    let newPassword = null;
+    try {
+        if (req.body.username !== undefined) {
+            username = req.body.username;
+        }
+        if (req.body.password !== undefined) {
+            password = req.body.password;
+        }
+        if (req.body.newPassword !== undefined) {
+            newPassword = req.body.newPassword;
+        }
+        if (newPassword === null || _.isEmpty(newPassword)) {
+            response.sendBadRequest(res, text.INVALID_NEW_PASSWORD);
+            return;
+        }
+
+        const loginResult = await authService.login(username, password);
+        if (loginResult.isAuthenticated === false) {
+            response.sendBadRequest(res, text.INCORRECT_USERNAME_PASSWORD);
+            return;
+        }
+
+        await authService.changePassword(username, newPassword);
+        response.sendSuccess(res, {
+            statusCode: 200,
+            message: text.CHANGE_PASSWORD_SUCCESS
+        });
     } catch (err) {
         logger.error(`Do ${req.url} failed, ${err.stack}`);
         response.sendError(res, err);
