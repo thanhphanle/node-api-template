@@ -5,20 +5,8 @@ Template of a Node API project
 ### Available API
 Endpoints:
 * Health check at `http://localhost:3000/api/health`
-* Register new user at `http://localhost:3000/api/auth/register`, POST with body
-```json
-{
-	"username": "admin",
-	"password": "123456"
-}
-```
-* Login user at `http://localhost:3000/api/auth/local`, POST with body
-```json
-{
-	"username": "admin",
-	"password": "123456"
-}
-```
+* Register new user at `http://localhost:3000/api/auth/register`
+* Login user at `http://localhost:3000/api/auth/local`
 
 ### How to setup project
 **Step 1**: Clone or download source from git repository, then install node modules by:
