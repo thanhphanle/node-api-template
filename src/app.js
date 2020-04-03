@@ -11,9 +11,15 @@ const rateLimitWrapper = require('./middlewares/rateLimitWrapper');
 
 const healthRoute = require('./routes/health');
 
-// Load process.env configs
+// Load process.env configs as soon as possible
 const dotenv = require('dotenv');
-dotenv.config({ path: path.resolve(process.cwd(), 'env', '.env') });
+const fileUtil = require('./util/fileUtil');
+var envPath = path.resolve(process.cwd(), 'env', '.env');
+if (!fileUtil.existsSync(envPath)) {
+    console.error(`Not found config file .env in env directory, process exits`);
+    process.exit(0);
+}
+dotenv.config({ path: envPath });
 
 console.log(`====== ${packageJson.name} ======`);
 logger.info(`====== ${packageJson.name} ======`);
