@@ -5,7 +5,21 @@ const userService = require('../services/userService');
 const userController = {};
 
 userController.listUser = async function(req, res) {
+    let id = null;
     try {
+        if (req.params.id !== undefined) {
+            id = req.params.id;
+            let user = await userService.findOne(id);
+            if (user === null) {
+                response.sendNotFound(res);
+                return;
+            }
+            delete user.password;
+            response.sendSuccess(res, user);
+            return;
+        }
+
+        // Find all
         let users = await userService.find({});
         users.forEach(element => {
             delete element.password;

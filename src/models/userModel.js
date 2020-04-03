@@ -48,8 +48,10 @@ userModel.findOne = async function(id) {
         db.find(query, function(err, docs) {
             if (err) {
                 reject(err);
-            } else {
+            } else if (docs.length > 0) {
                 resolve(docs[0]);
+            } else {
+                resolve(null);
             }
         });
     });
