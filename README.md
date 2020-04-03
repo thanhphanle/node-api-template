@@ -4,13 +4,33 @@ Template of a Node API project
 
 ### Available API
 Endpoints:
-* Health check: `http://localhost:3000/api/health`
+* Health check at `http://localhost:3000/api/health`
+* Register new user at `http://localhost:3000/api/auth/register`, POST with body
+```json
+{
+	"username": "admin",
+	"password": "123456"
+}
+```
+* Login user at `http://localhost:3000/api/auth/local`, POST with body
+```json
+{
+	"username": "admin",
+	"password": "123456"
+}
+```
 
 ### How to setup project
-Clone or download source from git repository, then install node modules by:
+**Step 1**: Clone or download source from git repository, then install node modules by:
 
 ```
 $ npm install
+```
+
+**Step 2**: Create a config file `.env` in env directory with content below:
+```
+JWT_KEY=this-is-a-sample-secret
+DB_STORE=/var/nodeapi-template-db
 ```
 
 ### How to run application
