@@ -22,11 +22,12 @@ const authAPI = require('./middlewares/authAPI');
 
 const healthRoute = require('./routes/health');
 const authRoute = require('./routes/auth');
+const usersRoute = require('./routes/users');
 
 console.log(`====== ${packageJson.name} ======`);
 logger.info(`====== ${packageJson.name} ======`);
 const environment = process.env.NODE_ENV || 'development';
-let versionMsg = `Version: ${packageJson.version} (${environment})`;
+const versionMsg = `Version: ${packageJson.version} (${environment})`;
 console.log(versionMsg);
 logger.info(versionMsg);
 
@@ -39,8 +40,9 @@ app.use(compression());
 /**
  * Register routes of API
  */
-app.use('/api/health', rateLimitWrapper(), authAPI(), healthRoute);
+app.use('/api/health', rateLimitWrapper(), healthRoute);
 app.use('/api/auth', rateLimitWrapper(), authRoute);
+app.use('/api/users', authAPI(), usersRoute);
 
 const port = serverConfig.port;
 app.listen(port, () => {
