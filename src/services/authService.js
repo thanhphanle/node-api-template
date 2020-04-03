@@ -2,7 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const env = require('../env');
 const userService = require('./userService');
-var authService = {};
+const uidUtil = require('../util/uidUtil');
+const authService = {};
 const saltRounds = 10;
 
 authService.login = async function(username, password) {
@@ -45,9 +46,15 @@ authService.register = async function(user) {
             };
         }
 
+        // Hash plain text password
         let salt = await bcrypt.genSalt(saltRounds);
         let hash = await bcrypt.hash(user.password, salt);
         user.password = hash;
+
+        // Generate user id
+        let id = uidUtil.generate(user.username);
+        user.id = id;
+
         const newUser = await userService.create(user);
         return {
             isSuccess: true,
