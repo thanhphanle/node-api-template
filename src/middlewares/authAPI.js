@@ -24,10 +24,10 @@ function authAPI(options) {
 
             // Verify token by decoding token
             try {
-                let decoded = authService.verifyToken(token);
+                let payload = authService.verifyToken(token);
 
                 // Assign user data from token
-                req.user = decoded.data;
+                req.user = payload.user;
             } catch (verifyErr) {
                 response.sendUnauthorized(res);
                 return;

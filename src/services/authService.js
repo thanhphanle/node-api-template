@@ -68,9 +68,10 @@ authService.register = async function(user) {
 };
 
 authService.generateToken = function(data) {
+    const payload = data || {};
     const signature = env.JWT_KEY;
     const expiration = '24h';
-    return jwt.sign({ data }, signature, { expiresIn: expiration });
+    return jwt.sign(payload, signature, { expiresIn: expiration });
 };
 
 authService.verifyToken = function(token) {

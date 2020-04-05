@@ -6,7 +6,7 @@ const _ = require('lodash');
 const text = require('../common/text');
 const authController = {};
 
-authController.local = async function(req, res) {
+authController.local = async function (req, res) {
     let username = '';
     let password = '';
     try {
@@ -24,8 +24,10 @@ authController.local = async function(req, res) {
         }
 
         let token = authService.generateToken({
-            id: loginResult.user.id,
-            username: loginResult.user.username
+            user: {
+                id: loginResult.user.id,
+                username: loginResult.user.username
+            }
         });
 
         let data = {
@@ -42,7 +44,7 @@ authController.local = async function(req, res) {
     }
 };
 
-authController.register = async function(req, res) {
+authController.register = async function (req, res) {
     let username = '';
     let password = '';
     try {
@@ -74,7 +76,7 @@ authController.register = async function(req, res) {
     }
 };
 
-authController.changePassword = async function(req, res) {
+authController.changePassword = async function (req, res) {
     let username = null;
     let password = null;
     let newPassword = null;
@@ -108,6 +110,10 @@ authController.changePassword = async function(req, res) {
         logger.error(`Do ${req.url} failed, ${err.stack}`);
         response.sendError(res, err);
     }
+};
+
+authController.resetPassword = async function (req, res) {
+    // To be implemented
 };
 
 module.exports = authController;
