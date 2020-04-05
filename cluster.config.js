@@ -3,9 +3,10 @@ module.exports = {
         {
             name: 'nodeapi-template',
             script: 'npm start',
-            exec_mode: 'cluster',
+            args: '',
+            exec_mode: "cluster", // Must be "" character to avoid error
 
-            instances: 3, // Use 'max' to achieve maximum of CPUs
+            instances: 'max', // Specific a number or 'max' to indacate using maximum of CPUs
             autorestart: true,
             watch: false,
             max_memory_restart: '1G',
