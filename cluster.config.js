@@ -6,7 +6,7 @@ module.exports = {
             args: 'start',
             exec_mode: "cluster", // Must be "" character to avoid systax error
 
-            instances: 'max', // Specific a number or 'max' to indacate using maximum of CPUs
+            instances: 'max', // Specify a number or 'max' to indicate using maximum of CPUs
             autorestart: true,
             watch: false,
             max_memory_restart: '1G',
