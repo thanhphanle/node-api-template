@@ -2,5 +2,10 @@
     "ratelimit": {
         "interval": 60000,
         "max": 15
+    },
+    "poweredBy": {
+        "_comment": "Add X-Powered-By header into request and response",
+        "enabled": true,
+        "value": "Node API Template"
     }
 }

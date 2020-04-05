@@ -19,6 +19,7 @@ dotenv.config({ path: envPath });
 
 const rateLimitWrapper = require('./middlewares/rateLimitWrapper');
 const authAPI = require('./middlewares/authAPI');
+const setHeader = require('./middlewares/setHeader');
 
 const healthRoute = require('./routes/health');
 const authRoute = require('./routes/auth');
@@ -36,6 +37,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 app.use(compression());
+app.use(setHeader());
 
 /**
  * Register routes of API
