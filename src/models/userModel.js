@@ -12,6 +12,7 @@ userModel.scheme = {
     id: 'String',
     username: 'String',
     password: 'String',
+    email: 'String',
     createdAt: 'Date',
     updatedAt: 'Date'
 };

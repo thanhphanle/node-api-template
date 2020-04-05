@@ -4,6 +4,10 @@ const authService = require('../services/authService');
 const moment = require('moment');
 const _ = require('lodash');
 const text = require('../common/text');
+const emailValidator = require('../validators/emailValidator');
+const usernameValidator = require('../validators/usernameValidator');
+const passwordValidator = require('../validators/passwordValidator');
+
 const authController = {};
 
 authController.local = async function (req, res) {
@@ -45,19 +49,33 @@ authController.local = async function (req, res) {
 };
 
 authController.register = async function (req, res) {
-    let username = '';
-    let password = '';
     try {
-        if (req.body.username !== undefined) {
-            username = req.body.username;
+        let username = req.body.username;
+        let password = req.body.password;
+        let email = req.body.email;
+
+        // Validate inputs
+        const usrTest = usernameValidator.test(username);
+        if (!usrTest.isValid) {
+            response.sendBadRequest(res, usrTest.message);
+            return;
         }
-        if (req.body.password !== undefined) {
-            password = req.body.password;
+        const passTest = passwordValidator.test(password);
+        if (!passTest.isValid) {
+            response.sendBadRequest(res, passTest.message);
+            return;
         }
+        const emailTest = emailValidator.test(email);
+        if (!emailTest.isValid) {
+            response.sendBadRequest(res, emailTest.message);
+            return;
+        }
+
         let newUser = {
             id: '',
             username: username,
             password: password,
+            email: email,
             createdAt: moment().format(),
             updatedAt: moment().format()
         };
@@ -68,6 +86,8 @@ authController.register = async function (req, res) {
         }
 
         let user = registerResult.user;
+
+        // Remove sensitive password data while return to response
         delete user.password;
         response.sendSuccess(res, user);
     } catch (err) {
