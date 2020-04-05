@@ -2,9 +2,9 @@ module.exports = {
     apps: [
         {
             name: 'nodeapi-template',
-            script: 'npm start',
-            args: '',
-            exec_mode: "cluster", // Must be "" character to avoid error
+            script: 'npm',
+            args: 'start',
+            exec_mode: "cluster", // Must be "" character to avoid systax error
 
             instances: 'max', // Specific a number or 'max' to indacate using maximum of CPUs
             autorestart: true,
