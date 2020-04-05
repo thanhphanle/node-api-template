@@ -1,0 +1,39 @@
+{
+    "_comment": "Define all policies",
+    "username": {
+        "minLength": {
+            "enabled": true,
+            "value": 6
+        },
+        "maxLength": {
+            "enabled": true,
+            "value": 32
+        }
+    },
+    "password": {
+        "minLength": {
+            "enabled": true,
+            "value": 6
+        },
+        "maxLength": {
+            "enabled": true,
+            "value": 32
+        },
+        "upperCaseChar": {
+            "enabled": false,
+            "value": 1
+        },
+        "lowerCaseChar": {
+            "enabled": false,
+            "value": 1
+        },
+        "specialChar": {
+            "enabled": false,
+            "value": 1
+        },
+        "numberChar": {
+            "enabled": false,
+            "value": 1
+        }
+    }
+}
