@@ -11,15 +11,22 @@ const passwordValidator = require('../validators/passwordValidator');
 const authController = {};
 
 authController.local = async function (req, res) {
-    let username = '';
-    let password = '';
     try {
-        if (req.body.username !== undefined) {
-            username = req.body.username;
+        let username = req.body.username;
+        let password = req.body.password;
+
+        // Validate inputs
+        const usrTest = usernameValidator.test(username);
+        if (!usrTest.isValid) {
+            response.sendBadRequest(res, usrTest.message);
+            return;
         }
-        if (req.body.password !== undefined) {
-            password = req.body.password;
+        const passTest = passwordValidator.test(password);
+        if (!passTest.isValid) {
+            response.sendBadRequest(res, passTest.message);
+            return;
         }
+
         let loginResult = await authService.login(username, password);
 
         if (!loginResult.isAuthenticated) {
@@ -97,21 +104,25 @@ authController.register = async function (req, res) {
 };
 
 authController.changePassword = async function (req, res) {
-    let username = null;
-    let password = null;
-    let newPassword = null;
     try {
-        if (req.body.username !== undefined) {
-            username = req.body.username;
+        let username = req.body.username;
+        let password = req.body.password;
+        let newPassword = req.body.newPassword;
+
+        // Validate inputs
+        const usrTest = usernameValidator.test(username);
+        if (!usrTest.isValid) {
+            response.sendBadRequest(res, usrTest.message);
+            return;
         }
-        if (req.body.password !== undefined) {
-            password = req.body.password;
+        const passTest = passwordValidator.test(password);
+        if (!passTest.isValid) {
+            response.sendBadRequest(res, passTest.message);
+            return;
         }
-        if (req.body.newPassword !== undefined) {
-            newPassword = req.body.newPassword;
-        }
-        if (newPassword === null || _.isEmpty(newPassword)) {
-            response.sendBadRequest(res, text.INVALID_NEW_PASSWORD);
+        const newPassTest = passwordValidator.test(newPassword, true);
+        if (!newPassTest.isValid) {
+            response.sendBadRequest(res, newPassTest.message);
             return;
         }
 
