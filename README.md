@@ -39,14 +39,14 @@ $ npm run start:prod
 
 ### How to deploy application with PM2
 
-Required: Installed PM2
+Require: Installed process manager PM2 following `npm install -g pm2`
 
-To run application using PM2 process manager (staging):
-```
-$ pm2 start ecosystem.config.js --env staging
-```
-
-To run application using PM2 process manager (production):
+To start application using PM2 in standalone mode (production):
 ```
 $ pm2 start ecosystem.config.js --env production
+```
+
+To start application using PM2 in cluster mode (production):
+```
+$ pm2 start cluster.config.js --env production
 ```
