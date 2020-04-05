@@ -2,8 +2,9 @@ module.exports = {
     apps: [
         {
             name: 'nodeapi-template',
-            script: 'npm start',
-            exec_mode: 'fork',
+            script: 'npm',
+            args: 'start',
+            exec_mode: "fork",
 
             instances: 1,
             autorestart: true,
