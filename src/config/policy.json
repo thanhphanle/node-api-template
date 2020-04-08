@@ -3,7 +3,7 @@
     "username": {
         "minLength": {
             "enabled": true,
-            "value": 6
+            "value": 8
         },
         "maxLength": {
             "enabled": true,
@@ -13,27 +13,23 @@
     "password": {
         "minLength": {
             "enabled": true,
-            "value": 6
+            "value": 8
         },
         "maxLength": {
             "enabled": true,
-            "value": 32
+            "value": 100
         },
-        "upperCaseChar": {
-            "enabled": false,
-            "value": 1
+        "hasUpperCaseLetter": {
+            "enabled": false
         },
-        "lowerCaseChar": {
-            "enabled": false,
-            "value": 1
+        "hasLowerCaseLetter": {
+            "enabled": false
         },
-        "specialChar": {
-            "enabled": false,
-            "value": 1
+        "hasDigits": {
+            "enabled": true
         },
-        "numberChar": {
-            "enabled": false,
-            "value": 1
+        "notSpaces": {
+            "enabled": true
         }
     }
 }

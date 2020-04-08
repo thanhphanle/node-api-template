@@ -1,9 +1,8 @@
 const _ = require('lodash');
+const pv = require('password-validator');
 const passwordValidator = {};
 const text = require('../common/text');
-
-const MAX_LENGTH = 32;
-const MIN_LENGTH = 6;
+const passPolicy = require('../config/policy.json').password;
 
 passwordValidator.test = function (password, isNewPassword = false) {
     if (password === undefined || password === null || _.isEmpty(password)) {
@@ -14,17 +13,44 @@ passwordValidator.test = function (password, isNewPassword = false) {
                 : text.INVALID_PASSWORD
         };
     }
-    if (password.length < MIN_LENGTH || password.length > MAX_LENGTH) {
+
+    try {
+        let schema = new pv();
+        if (passPolicy.minLength.enabled) {
+            schema = schema.is().min(passPolicy.minLength.value);
+        }
+        if (passPolicy.maxLength.enabled) {
+            schema = schema.is().max(passPolicy.maxLength.value);
+        }
+        if (passPolicy.hasUpperCaseLetter.enabled) {
+            schema = schema.has().uppercase();
+        }
+        if (passPolicy.hasLowerCaseLetter.enabled) {
+            schema = schema.has().lowercase();
+        }
+        if (passPolicy.hasDigits.enabled) {
+            schema = schema.has().digits();
+        }
+        if (passPolicy.notSpaces.enabled) {
+            schema = schema.not().spaces();
+        }
+
+        const result = schema.validate(password);
+        if (!result) {
+            return {
+                isValid: false,
+                message: isNewPassword
+                    ? text.INVALID_NEW_PASSWORD
+                    : text.INVALID_PASSWORD
+            };
+        }
+
         return {
-            isValid: false,
-            message: isNewPassword
-                ? text.INVALID_NEW_PASSWORD
-                : text.INVALID_PASSWORD
+            isValid: true
         };
+    } catch (err) {
+        throw err;
     }
-    return {
-        isValid: true
-    };
 };
 
 module.exports = passwordValidator;
