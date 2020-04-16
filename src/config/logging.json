@@ -1,6 +1,6 @@
 {
-    "dirname": "/var/log/nodeapi-template",
-    "filename": "nodeapi-template-%DATE%.log",
+    "dirname": "/var/log/node-api-template",
+    "filename": "node-api-template-%DATE%.log",
     "datePattern": "YYYY-MM-DD",
     "zippedArchive": false,
     "maxSize": "5m",
