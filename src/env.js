@@ -1,7 +1,10 @@
+const packageJson = require('../package.json');
+
 /**
  *  Expose all environment variables as constants here
  */
 module.exports = {
+    VERSION: packageJson.version,
     JWT_KEY: process.env.JWT_KEY,
 
     /**
